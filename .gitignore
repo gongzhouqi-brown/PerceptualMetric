@@ -3,3 +3,4 @@ __pycache__/
 target/
 .ipynb_checkpoints
 .idea
+sample_outputs
