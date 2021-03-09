@@ -1,0 +1,19 @@
+import os
+
+from pipeline.Pipeline import Pipeline
+from module.deformers.BiharmonicDeformer import *
+
+curr_dir = os.path.dirname(os.path.realpath(__file__))
+data_in_dir = "data_in"
+data_out_dir = "data_out"
+file_name = "head.obj"
+
+in_path = os.path.join(curr_dir, data_in_dir, file_name)
+out_path = os.path.join(curr_dir, data_out_dir, "biharmonic_head_test.obj")
+
+p = Pipeline(1)
+c = {PIVOTS: 4, FIRST: 0.3, SECOND: 0.6, THIRD: 0.8, FOURTH: 0.999}
+d = BiharmonicDeformer(c)
+p.plug(d)
+
+p.process_shape_file(in_path, out_path)
