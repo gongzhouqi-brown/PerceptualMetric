@@ -27,9 +27,15 @@ class BiharmonicDeformer(Deformer):
         min_z = min(zs)
         max_z = max(zs)
 
-        x_mid = (max_x - min_x) * 0.5 + min_x
-        y_mid = (max_y - min_y) * 0.5 + min_y
-        z_mid = (max_z - min_z) * 0.5 + min_z
+        x_len = (max_x - min_x) * 0.5
+        y_len = (max_y - min_y) * 0.5
+        z_len = (max_z - min_z) * 0.5
+
+        x_mid = x_len + min_x
+        y_mid = y_len + min_y
+        z_mid = z_len + min_z
+
+        largest_len = max(x_len, y_len, z_len)
 
         center = np.array([x_mid, y_mid, z_mid])
 
@@ -41,9 +47,9 @@ class BiharmonicDeformer(Deformer):
             deform_centers.append(v[int(np.floor(self.config[PIVOT_LABEL[i]] * len(v)))])
         for ve in v:
             dist = min([np.linalg.norm(ve - dc) for dc in deform_centers])
-            if dist < 20:
+            if dist < 0.05 * largest_len:
                 s.append(1)
-            elif dist < 100:
+            elif dist < 0.5 * largest_len:
                 s.append(-1)
             else:
                 s.append(0)
