@@ -8,6 +8,9 @@ from module.Refiner import refine
 
 
 class Pipeline:
+
+    # TODO: ADD useful debug information output
+
     def __init__(self, slots):
         self._slots = slots
         self._deformers = []
