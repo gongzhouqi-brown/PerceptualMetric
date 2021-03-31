@@ -11,10 +11,14 @@ from module.Deformer import Deformer
 class PointCloudDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         mesh = trimesh.Trimesh(v, f, process=False)
+        normals = mesh.face_normals
         samples, indices = trimesh.sample.sample_surface(mesh, len(f))
+        normals = normals[indices]
+        normals = open3d.utility.Vector3dVector(normals)
         pcd = open3d.geometry.PointCloud()
         pcd.points = open3d.utility.Vector3dVector(samples)
-        pcd.estimate_normals()
+        pcd.normals = open3d.utility.Vector3dVector(normals)
+        # pcd.estimate_normals()
 
         distances = pcd.compute_nearest_neighbor_distance()
         avg_dist = np.average(distances)
@@ -30,5 +34,6 @@ class PointCloudDeformer(Deformer):
 
     @staticmethod
     def get_applicable_configs() -> Dict[str, Callable[[float], float]]:
+        # TODO: add randomness
         sampler = lambda q: 2 ** np.floor(q * 3 + 5)
         return {0: sampler}

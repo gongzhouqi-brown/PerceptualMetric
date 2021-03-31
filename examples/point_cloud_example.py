@@ -1,7 +1,7 @@
 import os
 
 from pipeline.Pipeline import Pipeline
-from module.unfinished.PointCloudDeformer import PointCloudDeformer
+from module.deformers.PointCloudDeformer import PointCloudDeformer
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 data_in_dir = "data_in"
