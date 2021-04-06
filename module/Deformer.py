@@ -10,6 +10,7 @@ import os
 
 _MODULES_FOLDER = "deformers"
 _PYTHON_EXT = ".py"
+_DEFORMER_EXT = "Deformer.py"
 _SAMPLE_MODULE = "ConstantDeformer"
 
 _ALL_MODULES = None
@@ -34,7 +35,7 @@ def get_random_deformation() -> Deformer:
     if _ALL_MODULES is None:
         _ALL_MODULES = []
         modules_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), _MODULES_FOLDER)
-        modules = [f[:-3] for f in listdir(modules_folder) if f.endswith(".py") and not f.startswith(_SAMPLE_MODULE)]
+        modules = [f[:-3] for f in listdir(modules_folder) if f.endswith(_DEFORMER_EXT) and not f.startswith(_SAMPLE_MODULE)]
         for module in modules:
             spec = importlib.util.spec_from_file_location(module, join(modules_folder, module+_PYTHON_EXT))
             m = importlib.util.module_from_spec(spec)
