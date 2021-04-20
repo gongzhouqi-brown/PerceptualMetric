@@ -56,6 +56,7 @@ class BiharmonicDeformer(Deformer):
         s = np.array(s)
 
         b = np.array([[t[0] for t in [(i, s[i]) for i in range(0, v.shape[0])] if t[1] >= 0]]).T
+        b = b.astype(f.dtype)
 
         u_bc = np.zeros((b.shape[0], v.shape[1]))
         v_bc = np.zeros((b.shape[0], v.shape[1]))
