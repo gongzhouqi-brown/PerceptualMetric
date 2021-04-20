@@ -1,6 +1,6 @@
 import os
 
-from data.ShapeNet import iterate_shape_net
+from data.ShapeNet import iterate_shape_net, random_shape_net_object
 from module.validator.Validator import is_manifold
 
 
@@ -26,5 +26,12 @@ def shape_net_test():
     print(yes, no)
 
 
+def random_shape_net_test():
+    file = random_shape_net_object()
+    print(file)
+    print(is_manifold(file=file))
+
+
 if __name__ == '__main__':
-    shape_net_test()
+    random_shape_net_test()
+    in_path = os.path.join(curr_dir, data_in_dir, file_name)

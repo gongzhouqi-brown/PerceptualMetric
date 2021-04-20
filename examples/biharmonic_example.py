@@ -1,4 +1,5 @@
 import os
+from random import random
 
 from pipeline.Pipeline import Pipeline
 from module.deformers.BiharmonicDeformer import *
@@ -12,7 +13,7 @@ in_path = os.path.join(curr_dir, data_in_dir, file_name)
 out_path = os.path.join(curr_dir, data_out_dir, "biharmonic_head_test.obj")
 
 p = Pipeline(1)
-c = {PIVOTS: 4, FIRST: 0.3, SECOND: 0.6, THIRD: 0.8, FOURTH: 0.999}
+c = {PIVOTS: np.floor(random() * 4 + 1), FIRST: random(), SECOND: random(), THIRD: random(), FOURTH: random()}
 d = BiharmonicDeformer(c)
 p.plug(d)
 
