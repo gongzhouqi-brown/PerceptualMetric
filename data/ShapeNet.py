@@ -14,9 +14,14 @@ TAXONOMY = "taxonomy.json"
 NOT_FOUND = "NO_OBJ_FILE_HERE"
 
 
+def _get_lv1():
+    ls = listdir(root)
+    lv1 = [f for f in ls if os.path.isdir(join(root, f))]
+    return lv1
+
+
 def iterate_shape_net():
-    lv1 = listdir(root)
-    lv1.remove(TAXONOMY)
+    lv1 = _get_lv1()
     for f1 in lv1:
         full_f1 = join(root, f1)
         lv2 = listdir(full_f1)
@@ -31,8 +36,7 @@ def iterate_shape_net():
 def random_shape_net_object():
     res = None
     while res is None:
-        lv1 = listdir(root)
-        lv1.remove(TAXONOMY)
+        lv1 = _get_lv1()
         f1 = np.random.choice(lv1)
         full_f1 = join(root, f1)
         lv2 = listdir(full_f1)
@@ -49,8 +53,7 @@ def _count_shape_net():
     total = 0
     nones = 0
 
-    lv1 = listdir(root)
-    lv1.remove(TAXONOMY)
+    lv1 = _get_lv1()
     for f1 in lv1:
         full_f1 = join(root, f1)
         lv2 = listdir(full_f1)
@@ -74,7 +77,7 @@ def _stat_taxonomy():
     total = 0
     with open(join(root, TAXONOMY)) as f:
         data = json.load(f)
-    lv1 = listdir(root)
+    lv1 = _get_lv1()
     for d in data:
         if d["synsetId"] in lv1:
             total += d["numInstances"]
@@ -85,8 +88,7 @@ def _test_shape_net_complete():
     with open(join(root, TAXONOMY)) as f:
         data = json.load(f)
     exist = set()
-    lv1 = listdir(root)
-    lv1.remove(TAXONOMY)
+    lv1 = _get_lv1()
     count = 0
     for d in data:
         for child in d["children"]:
