@@ -1,5 +1,9 @@
 import igl
 import trimesh
+import numpy as np
+
+from data.ShapeNet import iterate_shape_net
+
 
 def refine(v, f):
     """
@@ -44,3 +48,18 @@ def connect_sperate_component(v, f):
         return newmesh.vertices, newmesh.faces
     else:
         return v, f
+
+
+if __name__ == '__main__':
+    counter = 0
+    for in_file in iterate_shape_net():
+        v, f = igl.read_triangle_mesh(in_file, np.float64)
+
+        T = trimesh.Trimesh(v, f)
+
+        components = trimesh.graph.connected_components(T.edges, engine='scipy')
+        num_of_components = len(components)
+
+        if num_of_components > 1:
+            counter += 1
+    print(counter)
