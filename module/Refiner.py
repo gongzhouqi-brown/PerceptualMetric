@@ -50,16 +50,18 @@ def connect_sperate_component(v, f):
         return v, f
 
 
-if __name__ == '__main__':
+def count_shape_net_components():
+    total = 0
     counter = 0
     for in_file in iterate_shape_net():
         v, f = igl.read_triangle_mesh(in_file, np.float64)
 
-        T = trimesh.Trimesh(v, f)
+        tm = trimesh.Trimesh(v, f)
 
-        components = trimesh.graph.connected_components(T.edges, engine='scipy')
+        components = trimesh.graph.connected_components(tm.edges, engine='scipy')
         num_of_components = len(components)
 
         if num_of_components > 1:
             counter += 1
-    print(counter)
+        total += 1
+    print(counter, "out of", total)

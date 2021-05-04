@@ -1,6 +1,7 @@
 import argparse
 
 from log.logger import setup_logger
+from module.Refiner import count_shape_net_components
 
 
 def initialize():
@@ -17,3 +18,4 @@ def initialize():
 
 if __name__ == '__main__':
     initialize()
+    count_shape_net_components()
