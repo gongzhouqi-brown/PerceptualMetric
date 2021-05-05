@@ -21,19 +21,18 @@ def initialize():
 
 
 def size_shape_net():
-    old_size = []
-    new_size = []
     counter = 0
-    for old_path in iterate_shape_net():
-        new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
-        old_size.append(os.path.getsize(old_path))
-        new_size.append(os.path.getsize(new_path))
+    faces = []
+    sizes = []
+    for path in iterate_shape_net():
+        size = os.path.getsize(path)
+        v, f = igl.read_triangle_mesh(path)
+        faces_num = len(f)
+        faces.append(faces_num)
+        sizes.append(size)
         counter += 1
         print(counter)
-    old_size = np.array(old_size)
-    new_size = np.array(new_size)
-    np.save("old", old_size)
-    np.save("new", new_size)
+    np.save("data", np.array([faces, sizes]))
 
 
 if __name__ == '__main__':
