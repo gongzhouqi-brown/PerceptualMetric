@@ -20,17 +20,24 @@ def initialize():
     setup_logger(args["filelog"])
 
 
-def new_shape_net():
+def size_shape_net():
+    old_size = []
+    new_size = []
     counter = 0
     for old_path in iterate_shape_net():
         new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
-        v, f = igl.read_triangle_mesh(old_path, np.float64)
-        igl.write_triangle_mesh(new_path, v, f)
+        old_size.append(os.path.getsize(old_path))
+        new_size.append(os.path.getsize(new_path))
         counter += 1
         print(counter)
+    old_size = np.array(old_size)
+    new_size = np.array(new_size)
+    np.save("old", old_size)
+    np.save("new", new_size)
 
 
 if __name__ == '__main__':
     initialize()
-    new_shape_net()
+    size_shape_net()
+
 
