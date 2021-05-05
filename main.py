@@ -1,6 +1,7 @@
 import argparse
 
 from data.ShapeNet import iterate_shape_net
+from examples.subdivision_example import max_test
 from log.logger import setup_logger
 from module.Refiner import count_shape_net_components
 import os
@@ -37,6 +38,6 @@ def size_shape_net():
 
 if __name__ == '__main__':
     initialize()
-    size_shape_net()
+    max_test()
 
 
