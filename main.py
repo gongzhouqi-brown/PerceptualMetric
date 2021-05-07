@@ -1,6 +1,7 @@
 import argparse
+import subprocess
 
-from data.ShapeNet import iterate_shape_net
+from data.ShapeNet import iterate_shape_net, get_object
 from examples.subdivision_example import max_test
 from log.logger import setup_logger
 from module.Refiner import count_shape_net_components
@@ -36,8 +37,26 @@ def size_shape_net():
     np.save("data", np.array([faces, sizes]))
 
 
+def refine_shape_net():
+    counter = 0
+    for old_path in iterate_shape_net():
+        size = os.path.getsize(path)
+        v, f = igl.read_triangle_mesh(path)
+        faces_num = len(f)
+        faces.append(faces_num)
+        sizes.append(size)
+        counter += 1
+        print(counter)
+    np.save("data", np.array([faces, sizes]))
+
+
+def manifold_object(in_path, out_path):
+    subprocess.run(["manifold", in_path, out_path])
+
+
 if __name__ == '__main__':
     initialize()
-    max_test()
+    p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
+    manifold_object(p, "~/outputs/sample_out.obj")
 
 

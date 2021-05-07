@@ -9,6 +9,7 @@ assert root is not None
 
 MODEL_FOLDER = "models"
 OBJECT_EXT = ".obj"
+OBJECT_NAME = "model_normalized.obj"
 TAXONOMY = "taxonomy.json"
 
 NOT_FOUND = "NO_OBJ_FILE_HERE"
@@ -47,6 +48,11 @@ def random_shape_net_object():
             if f3.endswith(OBJECT_EXT):
                 res = join(full_f2, f3)
     return res
+
+
+def get_object(n1, n2):
+    full_path = join(root, n1, n2, MODEL_FOLDER, OBJECT_NAME)
+    return full_path
 
 
 def _count_shape_net():
