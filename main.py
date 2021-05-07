@@ -52,8 +52,11 @@ def refine_shape_net():
 
 def manifold_object(in_path, out_path):
     temp_path = r"/home/zgong8/temp/temp.obj"
+    v, f = igl.read_triangle_mesh(in_path)
+    size = len(f)
+    multiplier = size * 5
     subprocess.run(["./manifold", in_path, temp_path], cwd="/home/zgong8/Manifold/build")
-    subprocess.run(["./simplify", "-i", temp_path, "-o", out_path, "-m", "-r", "0.2"], cwd=r"/home/zgong8/Manifold/build")
+    subprocess.run(["./simplify", "-i", temp_path, "-o", out_path, "-m", "-f", str(multiplier)], cwd=r"/home/zgong8/Manifold/build")
 
 
 if __name__ == '__main__':
