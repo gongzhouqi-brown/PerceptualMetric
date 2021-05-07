@@ -57,6 +57,6 @@ def manifold_object(in_path, out_path):
 if __name__ == '__main__':
     initialize()
     p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
-    manifold_object(p, "~/outputs/sample_out.obj")
+    manifold_object(p, "/home/zgong8/outputs/sample_out.obj")
 
 
