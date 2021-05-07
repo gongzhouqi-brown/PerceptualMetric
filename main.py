@@ -51,12 +51,14 @@ def refine_shape_net():
 
 
 def manifold_object(in_path, out_path):
-    subprocess.run(["./manifold", in_path, out_path], cwd="/home/zgong8/Manifold/build")
+    temp_path = r"/home/zgong8/temp/temp.obj"
+    subprocess.run(["./manifold", in_path, temp_path], cwd="/home/zgong8/Manifold/build")
+    subprocess.run(["./simplify", "-i", temp_path, "-o", out_path, "-m"], cwd=r"/home/zgong8/Manifold/build")
 
 
 if __name__ == '__main__':
     initialize()
     p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
-    manifold_object(p, "/home/zgong8/outputs/sample_out.obj")
+    manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 
 
