@@ -38,16 +38,14 @@ def size_shape_net():
 
 
 def refine_shape_net():
+    pivots = np.load(r"/home/zgong8/pivots.npy")
     counter = 0
-    for old_path in iterate_shape_net():
-        size = os.path.getsize(path)
-        v, f = igl.read_triangle_mesh(path)
-        faces_num = len(f)
-        faces.append(faces_num)
-        sizes.append(size)
-        counter += 1
-        print(counter)
-    np.save("data", np.array([faces, sizes]))
+    for i, old_path in enumerate(iterate_shape_net()):
+        if i in pivots:
+            new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
+            manifold_object(old_path, new_path)
+            counter += 1
+            print(counter)
 
 
 def manifold_object(in_path, out_path):
@@ -61,7 +59,8 @@ def manifold_object(in_path, out_path):
 
 if __name__ == '__main__':
     initialize()
-    p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
-    manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
+    refine_shape_net()
+    # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
+    # manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 
 
