@@ -29,13 +29,18 @@ def size_shape_net():
     new = []
     for i, old_path in enumerate(iterate_shape_net()):
         if i in pivots:
-            new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
-            old_size = os.path.getsize(old_path)
-            old.append(old_size)
-            new_size = os.path.getsize(new_path)
-            new.append(new_size)
             counter += 1
-            print(counter)
+            new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
+            if os.path.exists(new_path):
+                old_size = os.path.getsize(old_path)
+                old.append(old_size)
+                new_size = os.path.getsize(new_path)
+                new.append(new_size)
+                print(counter)
+            else:
+                old.append(-1)
+                new.append(-1)
+                print(counter, "NOT EXIST")
     np.save("compare", np.array([old, new]))
 
 
@@ -61,7 +66,7 @@ def manifold_object(in_path, out_path):
 
 if __name__ == '__main__':
     initialize()
-    refine_shape_net()
+    size_shape_net()
     # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
     # manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 
