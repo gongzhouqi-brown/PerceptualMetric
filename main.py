@@ -23,18 +23,20 @@ def initialize():
 
 
 def size_shape_net():
+    pivots = np.load(r"/home/zgong8/pivots.npy")
     counter = 0
-    faces = []
-    sizes = []
-    for path in iterate_shape_net():
-        size = os.path.getsize(path)
-        v, f = igl.read_triangle_mesh(path)
-        faces_num = len(f)
-        faces.append(faces_num)
-        sizes.append(size)
-        counter += 1
-        print(counter)
-    np.save("data", np.array([faces, sizes]))
+    old = []
+    new = []
+    for i, old_path in enumerate(iterate_shape_net()):
+        if i in pivots:
+            new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
+            old_size = os.path.getsize(old_path)
+            old.append(old_size)
+            new_size = os.path.getsize(new_path)
+            new.append(new_size)
+            counter += 1
+            print(counter)
+    np.save("compare", np.array([old, new]))
 
 
 def refine_shape_net():
