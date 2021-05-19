@@ -1,5 +1,6 @@
 import numpy as np
 
+from constant.constant import max_legal_faces, max_output_faces
 from module.Deformer import Deformer, get_random_deformation
 
 import igl
@@ -22,17 +23,24 @@ class Pipeline:
     def is_full(self):
         return self._slots == len(self._deformers)
 
-    def process_shape_file(self, in_file: str, out_file: str) -> None:
+    def process_shape_file(self, in_file: str, out_file: str):
         assert self.is_full()
         vertices, faces = igl.read_triangle_mesh(in_file, np.float64)
         new_vertices, new_faces = self.process_shape_data(vertices, faces)
-        igl.write_triangle_mesh(out_file, new_vertices, new_faces)
+        if new_faces is not None:
+            if len(new_faces) < max_output_faces:
+                igl.write_triangle_mesh(out_file, new_vertices, new_faces)
+                return True
+        return False
 
     def process_shape_data(self, vertices, faces):
         assert self.is_full()
         nv, nf = refine(vertices, faces)
         for deformer in self._deformers:
-            nv, nf = deformer.transform(nv, nf)
+            if len(nf) < max_legal_faces:
+                nv, nf = deformer.transform(nv, nf)
+            else:
+                return None, None
         return nv, nf
 
     def __str__(self):
@@ -41,6 +49,7 @@ class Pipeline:
             s += str(type(d))
             s += " "
             s += str(d.config)
+            s += " "
         return s
 
 
@@ -58,8 +67,8 @@ def run_random_pipeline(in_file, out_file):
             dd = p_str.find("DecimationDeformer", vd)
             if dd != -1:
                 p = None
-    # try:
-    print(str(p))
-    p.process_shape_file(in_file, out_file)
-    # except ValueError:
-    #     print(str(p))
+    success = p.process_shape_file(in_file, out_file)
+    if success:
+        return p
+    else:
+        return None

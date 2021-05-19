@@ -40,9 +40,28 @@ def list_shape_net():
                     print(counter, "NOT EXIST")
 
 
+def random_shape_sample():
+    t = [r"/home/zgong8/new_SN/02992529/a3bc032d0842d570348e2c62a688b780/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/6d053ef40bedd8fcbfa0195eb6461a44/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/c43c9123ed893de5a0eb5a85db887292/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/2df0bc8b46ad3cb858932236a22029d3/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/ab3ebae8a44e1ae8ca47cd18decbac61/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/976a8d10e8423f8d8f15e8aad14ff29e/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/2dccc7cfff6f9a28aca331f9e5d9fa9/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/b442b550e827cbcc8ea897fbf75dc392/models/model_normalized.obj",
+         r"/home/zgong8/new_SN/02992529/500fbdefb58e261af2cdad303f49c9f9/models/model_normalized.obj"]
+    for i, in_path in enumerate(t):
+        out_path = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + ".obj"
+        file_path = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + ".txt"
+        ppl = run_random_pipeline(in_path, out_path)
+        with open(file_path, 'w') as f:
+            f.write(str(ppl))
+        f.close()
+
+
 if __name__ == '__main__':
     initialize()
-    run_random_pipeline("312312132","")
+    random_shape_sample()
     # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
     # manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 
