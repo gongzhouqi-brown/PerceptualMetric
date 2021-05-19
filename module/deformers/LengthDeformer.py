@@ -11,7 +11,7 @@ Y = "y"
 Z = "z"
 
 
-class ScaleDeformer(Deformer):
+class LengthDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         nv = deepcopy(v)
         nf = deepcopy(f)
