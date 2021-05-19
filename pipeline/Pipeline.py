@@ -35,11 +35,31 @@ class Pipeline:
             nv, nf = deformer.transform(nv, nf)
         return nv, nf
 
+    def __str__(self):
+        s = ""
+        for d in self._deformers:
+            s += str(type(d))
+            s += " "
+            s += str(d.config)
+        return s
+
 
 def run_random_pipeline(in_file, out_file):
-    q = np.random.uniform()
-    slots = int(np.floor(q * 10 + 1))
-    p = Pipeline(slots)
-    while not p.is_full():
-        p.plug(get_random_deformation())
+    p = None
+    while p is None:
+        q = np.random.uniform()
+        slots = int(np.floor(q * 10 + 1))
+        p = Pipeline(slots)
+        while not p.is_full():
+            p.plug(get_random_deformation())
+        p_str = str(p)
+        vd = p_str.find("VoxelizeDeformer")
+        if vd != -1:
+            dd = p_str.find("DecimationDeformer", vd)
+            if dd != -1:
+                p = None
+    # try:
+    print(str(p))
     p.process_shape_file(in_file, out_file)
+    # except ValueError:
+    #     print(str(p))
