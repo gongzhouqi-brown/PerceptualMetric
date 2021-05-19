@@ -1,10 +1,6 @@
-from copy import deepcopy
 from typing import Dict, Callable, Tuple
 
-import igl
 import numpy as np
-import trimesh
-import math
 
 from module.Deformer import Deformer
 from module.deformers.cageTransform import CageConfig, Random_Cage_Deform
@@ -17,11 +13,9 @@ PHI = "phi"
 PIVOTS = "pivots"
 ROTATION_DEG_COS = 0.1
 
-class RandomCageDeformer(Deformer):
-    def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]: 
-        num_of_vertex = v.shape[0]
-        num_of_face = f.shape[0]
 
+class RandomCageDeformer(Deformer):
+    def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         maxlen = (v.max(axis=0) - v.min(axis=0)).max()
         theta = self.config[THETA]
         phi = self.config[PHI]
@@ -36,12 +30,10 @@ class RandomCageDeformer(Deformer):
 
     @staticmethod
     def get_applicable_configs() -> Dict[str, Callable[[float], float]]:
-        random_point_sampler = lambda q: q
-        cfg = {}
-        cfg[T_X] = random_point_sampler
-        cfg[T_Y] = random_point_sampler
-        cfg[T_Z] = random_point_sampler
-        cfg[THETA] = lambda q : np.arccos(1 - ROTATION_DEG_COS * q)
-        cfg[PHI] = lambda q : 2 * np.pi * q
-        cfg[PIVOTS] = random_point_sampler
+        cfg = {T_X: lambda q: q,
+               T_Y: lambda q: q,
+               T_Z: lambda q: q,
+               THETA: lambda q: np.arccos(1 - ROTATION_DEG_COS * q),
+               PHI: lambda q: 2 * np.pi * q,
+               PIVOTS: lambda q: q}
         return cfg

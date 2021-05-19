@@ -1,9 +1,7 @@
-from copy import deepcopy
 from typing import Dict, Callable, Tuple
 
 import igl
 import numpy as np
-import trimesh
 import math
 
 from module.Deformer import Deformer
@@ -18,6 +16,7 @@ PIVOTS = "pivots"
 ROTATION_DEG_COS = 0.1
 MOVE_PORTION = 0.05
 FLOW_PORTION = 0.2
+
 
 class ARAPDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:

@@ -18,15 +18,7 @@ class PointCloudDeformer(Deformer):
         pcd = open3d.geometry.PointCloud()
         pcd.points = open3d.utility.Vector3dVector(samples)
         pcd.normals = open3d.utility.Vector3dVector(normals)
-        # pcd.estimate_normals()
 
-        distances = pcd.compute_nearest_neighbor_distance()
-        avg_dist = np.average(distances)
-        radius = 1.5 * avg_dist
-
-        # new_mesh = open3d.geometry.TriangleMesh.create_from_point_cloud_poisson(
-        #     pcd,
-        #     open3d.utility.DoubleVector([radius, radius * 2]))
         new_mesh, _ = open3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pcd)
         nv = np.array(new_mesh.vertices)
         nf = np.array(new_mesh.triangles)
@@ -34,6 +26,4 @@ class PointCloudDeformer(Deformer):
 
     @staticmethod
     def get_applicable_configs() -> Dict[str, Callable[[float], float]]:
-        # TODO: add randomness
-        sampler = lambda q: 2 ** np.floor(q * 3 + 5)
-        return {0: sampler}
+        return {}

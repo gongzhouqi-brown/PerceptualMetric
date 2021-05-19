@@ -7,6 +7,7 @@ from module.Deformer import Deformer
 
 
 RATIO = "ratio"
+EXPLANATION = {RATIO: "Between 2 to 10 times (inclusive)."}
 
 
 class DecimationDeformer(Deformer):

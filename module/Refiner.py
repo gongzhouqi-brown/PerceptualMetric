@@ -1,7 +1,11 @@
+import subprocess
+from copy import deepcopy
+
 import igl
 import trimesh
 import numpy as np
 
+from constant.constant import refiner_path, pivot_path, temp_obj
 from data.ShapeNet import iterate_shape_net
 
 
@@ -12,43 +16,27 @@ def refine(v, f):
     :param f: faces
     :return: refined vertices and faces
     """
-    # TODO: Implement this
-    return v, f
+    return deepcopy(v), deepcopy(f)
 
-def connect_sperate_component(v, f):
-    """
-    Run a union operation if more than one sperated components has been found for a given mesh
-    :param v: vertices
-    :param f: faces
-    :return: connected vertices and faces
-    """ 
-    T = trimesh.Trimesh(v, f)
-    components = trimesh.graph.connected_components(T.edges, engine='scipy')
-    num_of_components = len(components)
-    if num_of_components > 1:
-        num_of_vertices = v.shape[0]
-        map_v2subv = [-1] * num_of_vertices # old vid to component id
-        map_vid = [-1] * num_of_vertices # old vid to new vid
-        faces = [[] for i in range(num_of_components)]
-        vertices = [[None for j in range(len(components[i]))] for i in range(num_of_components)]
-        
-        for i in range(num_of_components):
-            for newvid, oldvid in enumerate(components[i]):
-                map_vid[oldvid] = newvid
-                map_v2subv[oldvid] = i
-                vertices[i][newvid] = T.vertices[oldvid]
-                
-        for (a, b, c) in T.faces:
-            cid = map_v2subv[a]
-            faces[cid].append([map_vid[a], map_vid[b], map_vid[c]])
 
-        meshes = [trimesh.Trimesh(vertices[i], faces[i]) for i in range(num_of_components)]
-        newmesh = trimesh.boolean.union(meshes, engine="blender")
+def refine_shape_net():
+    pivots = np.load(pivot_path)
+    counter = 0
+    for i, old_path in enumerate(iterate_shape_net()):
+        if i in pivots:
+            new_path = old_path.replace("ShapeNetCore.v2", "new_SN")
+            manifold_object(old_path, new_path)
+            counter += 1
+            print(counter)
 
-        return newmesh.vertices, newmesh.faces
-    else:
-        return v, f
 
+def manifold_object(in_path, out_path):
+    temp_path = temp_obj
+    v, f = igl.read_triangle_mesh(in_path)
+    size = len(f)
+    multiplier = size * 5
+    subprocess.run(["./manifold", in_path, temp_path], cwd=refiner_path)
+    subprocess.run(["./simplify", "-i", temp_path, "-o", out_path, "-m", "-f", str(multiplier)], cwd=refiner_path)
 
 def count_shape_net_components():
     total = 0
