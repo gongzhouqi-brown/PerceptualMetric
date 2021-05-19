@@ -1,14 +1,12 @@
-from copy import deepcopy
 from typing import Dict, Callable, Tuple
 
 import igl
-import mcubes
 import numpy as np
 from igl import SIGNED_DISTANCE_TYPE_DEFAULT
 
 from module.Deformer import Deformer
 
-
+# TODO randomness
 class MarchingCubesDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         nv, nf, _, _, _ = igl.offset_surface(v, f, 0, 64, SIGNED_DISTANCE_TYPE_DEFAULT)
