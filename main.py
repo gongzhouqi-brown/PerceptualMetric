@@ -9,6 +9,7 @@ import os
 import igl
 import numpy as np
 from constant.constant import pivot_path
+from pipeline.Pipeline import run_random_pipeline
 
 
 def initialize():
@@ -41,7 +42,7 @@ def list_shape_net():
 
 if __name__ == '__main__':
     initialize()
-    list_shape_net()
+    run_random_pipeline("312312132","")
     # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
     # manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 
