@@ -59,6 +59,7 @@ def random_shape_sample():
             f.write("\n")
             f.write(str(status))
         f.close()
+        print("{} done!".format(str(i)))
 
 
 if __name__ == '__main__':
