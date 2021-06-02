@@ -21,7 +21,6 @@ FLOW_PORTION = 0.2
 class ARAPDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         num_of_vertex = v.shape[0]
-        num_of_face = f.shape[0]
 
         maxlen = (v.max(axis=0) - v.min(axis=0)).max() 
 

@@ -53,9 +53,11 @@ def random_shape_sample():
     for i, in_path in enumerate(t):
         out_path = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + ".obj"
         file_path = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + ".txt"
-        ppl = run_random_pipeline(in_path, out_path)
+        ppl, status = run_random_pipeline(in_path, out_path)
         with open(file_path, 'w') as f:
             f.write(str(ppl))
+            f.write("\n")
+            f.write(str(status))
         f.close()
 
 
