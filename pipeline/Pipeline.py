@@ -67,8 +67,16 @@ def run_random_pipeline(in_file, out_file):
             dd = p_str.find("DecimationDeformer", vd)
             if dd != -1:
                 p = None
-    success = p.process_shape_file(in_file, out_file)
-    if success:
-        return p, True
-    else:
-        return p, False
+    try:
+        success = p.process_shape_file(in_file, out_file)
+        if success:
+            return p, True
+        else:
+            return p, False
+    except Exception as e:
+        print("ERROR!")
+        print("TraceBack")
+        print(e.__traceback__)
+        print("General")
+        print(str(e))
+        print(str(p))
