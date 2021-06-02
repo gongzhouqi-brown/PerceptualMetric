@@ -69,6 +69,6 @@ def run_random_pipeline(in_file, out_file):
                 p = None
     success = p.process_shape_file(in_file, out_file)
     if success:
-        return p
+        return p, True
     else:
-        return None
+        return p, False
