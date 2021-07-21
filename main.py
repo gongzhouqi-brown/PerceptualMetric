@@ -13,6 +13,7 @@ import numpy as np
 from constant.constant import pivot_path
 from module.validator.Validator import is_manifold
 from pipeline.Pipeline import run_random_pipeline, Pipeline
+from util.stringToPipeline import string_to_pipelines
 
 
 def initialize():
@@ -82,12 +83,22 @@ def random_shape_sample():
         print("{} done!".format(str(i)))
 
 
+def debug():
+    s = r"<class 'MarchingCubesDeformer.MarchingCubesDeformer'> {} <class 'LengthDeformer.LengthDeformer'> {'x': 0.8585584946847424, 'y': 1.2497535030762963, 'z': 1.1194365076434625} <class 'DecimationDeformer.DecimationDeformer'> {'ratio': 8.0} <class 'RandomCageDeformer.RandomCageDeformer'> {'t_x': 0.6238675275926835, 't_y': 0.6803571228735866, 't_z': 0.021039636197039857, 'theta': 0.28097564127558766, 'phi': 0.816326646306728, 'pivots': 0.9467472027843402} <class 'RandomCageDeformer.RandomCageDeformer'> {'t_x': 0.8876853397486949, 't_y': 0.5315935433129064, 't_z': 0.3911888761050619, 'theta': 0.36074874511511146, 'phi': 3.6074052123307347, 'pivots': 0.5945342632947703} <class 'LengthDeformer.LengthDeformer'> {'x': 0.604145944793599, 'y': 1.2216798900694399, 'z': 1.0704989478658395} <class 'RandomCageDeformer.RandomCageDeformer'> {'t_x': 0.36017135075582085, 't_y': 0.3771138116171606, 't_z': 0.016002395066274544, 'theta': 0.26761048770247675, 'phi': 3.0007024102924764, 'pivots': 0.9714222125776031} <class 'ARAPDeformer.ARAPDeformer'> {'t_x': 0.35341306969899844, 't_y': 0.11384102784135575, 't_z': 0.368233517664869, 'theta': 0.853672361463905, 'phi': 2.1633555063379974, 'pivots': 0.14521404805108684} <class 'RandomCageDeformer.RandomCageDeformer'> {'t_x': 0.48387559520116974, 't_y': 0.10430416340681481, 't_z': 0.5366440194061546, 'theta': 0.37208628760245116, 'phi': 6.048740228011427, 'pivots': 0.07114043848393736} <class 'ARAPDeformer.ARAPDeformer'> {'t_x': 0.9559651247353135, 't_y': 0.5490014127877697, 't_z': 0.3268880929352812, 'theta': 0.2172869905165308, 'phi': 1.3520286667669872, 'pivots': 0.42591774920621184}"
+
+    in_f = r"/home/zgong8/ShapeNetCore.v2/04004475/75e53b4107a95368a3c3591ebf6e2911/models/model_normalized.obj"
+    out_f = r"/home/zgong8/PerceptualMetric/debug/out{}.obj"
+    ps = string_to_pipelines(s)
+    for i, p in enumerate(ps):
+        p.process_shape_file(in_f, out_f.format(i))
+        in_f = out_f.format(i)
+        print(i, "done")
+
 if __name__ == '__main__':
     initialize()
-    random_shape_sample()
+    debug()
+    #random_shape_sample()
     #test()
     #shape_net_test()
-    # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
-    # manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 
 
