@@ -12,7 +12,7 @@ in_path = os.path.join(curr_dir, data_in_dir, file_name)
 out_path = os.path.join(curr_dir, data_out_dir, "vox_head_test_32.obj")
 
 p = Pipeline(1)
-d = VoxelizeDeformer({NUM_CUBES: 32})
+d = VoxelizeDeformer({NUM_CUBES: 128})
 p.plug(d)
 
 p.process_shape_file(in_path, out_path)

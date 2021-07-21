@@ -1,15 +1,18 @@
 import argparse
 import subprocess
 
-from data.ShapeNet import iterate_shape_net, get_object
-from examples.subdivision_example import max_test
+from data.ShapeNet import iterate_shape_net, get_object, random_shape_net_object
+from examples.random_cage_test import shape_net_test
+from examples.validator_example import validate_for_examples
+from examples.biharmonic_example import test
 from log.logger import setup_logger
-from module.Refiner import count_shape_net_components
+from module.Refiner import count_shape_net_components, manifold_object
 import os
 import igl
 import numpy as np
 from constant.constant import pivot_path
-from pipeline.Pipeline import run_random_pipeline
+from module.validator.Validator import is_manifold
+from pipeline.Pipeline import run_random_pipeline, Pipeline
 
 
 def initialize():
@@ -41,30 +44,49 @@ def list_shape_net():
 
 
 def random_shape_sample():
-    t = [r"/home/zgong8/new_SN/02992529/a3bc032d0842d570348e2c62a688b780/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/6d053ef40bedd8fcbfa0195eb6461a44/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/c43c9123ed893de5a0eb5a85db887292/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/2df0bc8b46ad3cb858932236a22029d3/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/ab3ebae8a44e1ae8ca47cd18decbac61/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/976a8d10e8423f8d8f15e8aad14ff29e/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/2dccc7cfff6f9a28aca331f9e5d9fa9/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/b442b550e827cbcc8ea897fbf75dc392/models/model_normalized.obj",
-         r"/home/zgong8/new_SN/02992529/500fbdefb58e261af2cdad303f49c9f9/models/model_normalized.obj"]
-    for i, in_path in enumerate(t):
-        out_path = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + ".obj"
-        file_path = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + ".txt"
-        ppl, status = run_random_pipeline(in_path, out_path)
-        with open(file_path, 'w') as f:
+    for i in range(100):
+        in_path = random_shape_net_object()
+        out_path_ori = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-ori.obj"
+        out_path1 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-1.obj"
+        file_path1 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-1.txt"
+        out_path2 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-2.obj"
+        file_path2 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-2.txt"
+        empty_pipeline = Pipeline(0)
+        empty_pipeline.process_shape_file(in_path, out_path_ori)
+        ppl, status = run_random_pipeline(in_path, out_path1)
+        with open(file_path1, 'w') as f:
+            f.write(in_path)
+            f.write("\n")
             f.write(str(ppl))
             f.write("\n")
+            f.write("status: ")
             f.write(str(status))
+            if status:
+                f.write("\n")
+                f.write("manifold: ")
+                f.write(str(is_manifold(file=out_path1)))
+        f.close()
+        ppl, status = run_random_pipeline(in_path, out_path2)
+        with open(file_path2, 'w') as f:
+            f.write(in_path)
+            f.write("\n")
+            f.write(str(ppl))
+            f.write("\n")
+            f.write("status: ")
+            f.write(str(status))
+            if status:
+                f.write("\n")
+                f.write("manifold: ")
+                f.write(str(is_manifold(file=out_path2)))
         f.close()
         print("{} done!".format(str(i)))
 
 
 if __name__ == '__main__':
     initialize()
-    random_shape_sample()
+    validate_for_examples()
+    #test()
+    #shape_net_test()
     # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")
     # manifold_object(p, r"/home/zgong8/outputs/simplified_out.obj")
 

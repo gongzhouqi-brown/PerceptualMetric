@@ -32,6 +32,20 @@ def random_shape_net_test():
     print(is_manifold(file=file))
 
 
+def validate_for_examples():
+
+    f_name = r"/home/zgong8/PerceptualMetric/examples/data_out/rc{}.obj"
+    for i in range(10):
+        _f_name = f_name.format(i)
+        print(_f_name)
+        print(is_manifold(file=_f_name))
+        
+
+
 if __name__ == '__main__':
-    random_shape_net_test()
-    in_path = os.path.join(curr_dir, data_in_dir, file_name)
+    # random_shape_net_test()
+    # in_path = os.path.join(curr_dir, data_in_dir, file_name)
+    f_name = r"/home/zgong8/PerceptualMetric/examples/data_out/mc{}{}.obj"
+    for i in range(10):
+        print(is_manifold(file=f_name.format(i, "")))
+        

@@ -129,8 +129,11 @@ class VoxelizeDeformer(Deformer):
         g = g.fill()
 
         int_vertices = []
+        vox_shape = g.matrix.shape
+        corner_shape = (vox_shape[0]+1, vox_shape[1]+1, vox_shape[2]+1)
+        track_vertices = np.full(corner_shape, -1)
+        curr_order = 0
         new_faces = []
-
         for i in range(g.filled_count):
             neighbors = self._get_six_faces_status(g, i)
             for j in range(6):
@@ -138,14 +141,14 @@ class VoxelizeDeformer(Deformer):
                     outer_face = self._get_face_indices(g, i, j)
                     p = []
                     for corner in outer_face:
-                        curr_len = len(int_vertices)
-                        for vo in range(curr_len):
-                            if int_vertices[vo] == corner:
-                                p_index = vo
-                                break
-                        else:
-                            p_index = curr_len
+                        pre_assigned_id = track_vertices[corner[0]][corner[1]][corner[2]]
+                        if pre_assigned_id == -1:
+                            p_index = curr_order
+                            track_vertices[corner[0]][corner[1]][corner[2]] = p_index
                             int_vertices.append(corner)
+                            curr_order += 1
+                        else:
+                            p_index = pre_assigned_id
                         p.append(p_index)
                     new_faces.append([p[2], p[1], p[0]])
                     new_faces.append([p[0], p[3], p[2]])

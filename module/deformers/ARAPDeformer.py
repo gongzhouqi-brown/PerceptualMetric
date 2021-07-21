@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Dict, Callable, Tuple
 
 import igl
@@ -13,16 +14,17 @@ T_Z = "t_z"
 THETA = "theta"
 PHI = "phi"
 PIVOTS = "pivots"
-ROTATION_DEG_COS = 0.1
-MOVE_PORTION = 0.05
-FLOW_PORTION = 0.2
+ROTATION_DEG_COS = 0.5
+MOVE_PORTION = 0.1
+FLOW_PORTION = 0.5
 
 
 class ARAPDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        num_of_vertex = v.shape[0]
+        vcp = deepcopy(v)
+        num_of_vertex = vcp.shape[0]
 
-        maxlen = (v.max(axis=0) - v.min(axis=0)).max() 
+        maxlen = (vcp.max(axis=0) - vcp.min(axis=0)).max()
 
         # load config
         theta = self.config[THETA]
@@ -36,8 +38,8 @@ class ARAPDeformer(Deformer):
 
         # 1 move, -1 flow, 0 fix
         s = np.zeros(num_of_vertex)
-        for idx, p in enumerate(v):
-            dist = np.linalg.norm(p - v[pivot])
+        for idx, p in enumerate(vcp):
+            dist = np.linalg.norm(p - vcp[pivot])
             if dist < maxlen * MOVE_PORTION:
                 s[idx] = 1
             elif dist < maxlen * FLOW_PORTION:
@@ -45,15 +47,15 @@ class ARAPDeformer(Deformer):
             else:
                 s[idx] = 0
 
-        b = np.array([[t[0] for t in [(i, s[i]) for i in range(0, v.shape[0])] if t[1] >= 0]]).T
-        arap = igl.ARAP(v, f, 3, b)
+        b = np.array([[t[0] for t in [(i, s[i]) for i in range(0, vcp.shape[0])] if t[1] >= 0]]).T
+        arap = igl.ARAP(vcp, f, 3, b)
         bc = np.zeros((b.size, 3))
         for i in range(b.shape[0]):
-            bc[i] = v[b[i]]
+            bc[i] = vcp[b[i]]
             if s[b[i]] == 1:
                 bc[i] = rotation @ bc[i] + translation
-        vn = arap.solve(bc, v)
-        return vn, f
+        vn = arap.solve(bc, vcp)
+        return vn, deepcopy(f)
         
     @staticmethod
     def get_applicable_configs() -> Dict[str, Callable[[float], float]]:

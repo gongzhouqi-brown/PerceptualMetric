@@ -4,6 +4,8 @@ from os import listdir
 from os.path import join
 import numpy as np
 
+from module.validator.Validator import is_manifold
+
 root = os.getenv("SHAPENET_HOME")
 assert root is not None
 
@@ -47,6 +49,9 @@ def random_shape_net_object():
         for f3 in lv3:
             if f3.endswith(OBJECT_EXT):
                 res = join(full_f2, f3)
+        if res is not None:
+            if not is_manifold(res):
+                res = None
     return res
 
 

@@ -48,3 +48,12 @@ def get_random_deformation() -> Deformer:
         q = np.random.uniform()
         config[c] = f(q)
     return clazz(config)
+
+
+def name_to_deformation(name, config):
+    modules_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), _MODULES_FOLDER)
+    spec = importlib.util.spec_from_file_location(name, join(modules_folder, name + _PYTHON_EXT))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    clazz = getattr(m, name)
+    return clazz(config)

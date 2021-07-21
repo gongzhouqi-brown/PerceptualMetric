@@ -9,6 +9,19 @@ data_in_dir = "data_in"
 data_out_dir = "data_out"
 
 
+def test():
+    in_path = os.path.join(curr_dir, data_out_dir, "mc5b.obj")
+    out_path = os.path.join(curr_dir, data_out_dir, "mc5b_decimation.obj")
+
+
+    p = Pipeline(1)
+    d = DecimationDeformer({"ratio": 5.0})
+    p.plug(d)
+
+    p.process_shape_file(in_path, out_path)
+
+
+
 def shape_net_test():
     for i in range(100):
         in_path = random_shape_net_object()

@@ -31,6 +31,8 @@ class Pipeline:
             if len(new_faces) < max_output_faces:
                 igl.write_triangle_mesh(out_file, new_vertices, new_faces)
                 return True
+            else:
+                print("Too large, bad for connection, dropped in the end.")
         return False
 
     def process_shape_data(self, vertices, faces):
@@ -39,7 +41,9 @@ class Pipeline:
         for deformer in self._deformers:
             if len(nf) < max_legal_faces:
                 nv, nf = deformer.transform(nv, nf)
+                print(str(deformer), "done")
             else:
+                print("result too large, dropped in the middle.")
                 return None, None
         return nv, nf
 
@@ -68,6 +72,8 @@ def run_random_pipeline(in_file, out_file):
             if dd != -1:
                 p = None
     try:
+        print("running: ", str(p))
+        print("on file: ", in_file)
         success = p.process_shape_file(in_file, out_file)
         if success:
             return p, True
@@ -80,3 +86,4 @@ def run_random_pipeline(in_file, out_file):
         print("General")
         print(str(e))
         print(str(p))
+        return p, False

@@ -15,4 +15,4 @@ if platform == "linux" or platform == "linux2":
 
 current_largest = 6723514  # 6.7M
 max_output_faces = 350000
-max_legal_faces = 15000000
+max_legal_faces = 5000000

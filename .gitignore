@@ -5,3 +5,6 @@ target/
 .idea
 sample_outputs
 examples/data_out
+debug/
+sample_out/
+valid_shapes.txt
