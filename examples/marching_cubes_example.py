@@ -3,7 +3,7 @@ import subprocess
 
 from data.ShapeNet import random_shape_net_object
 from pipeline.Pipeline import Pipeline
-from module.unfinished.MarchingCubesDeformer import MarchingCubesDeformer
+from module.deformers.MarchingCubesDeformer import MarchingCubesDeformer
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 data_in_dir = "data_in"

@@ -6,6 +6,7 @@ from module.Deformer import Deformer, get_random_deformation
 import igl
 
 from module.Refiner import refine
+from module.deformers.PointCloudDeformer import PointCloudDeformer
 
 
 class Pipeline:
@@ -19,6 +20,8 @@ class Pipeline:
     def plug(self, d: Deformer):
         assert self._slots > len(self._deformers)
         self._deformers.append(d)
+        if isinstance(d, PointCloudDeformer):
+            self._slots = len(self._deformers)
 
     def is_full(self):
         return self._slots == len(self._deformers)

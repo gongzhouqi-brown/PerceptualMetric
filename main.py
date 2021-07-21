@@ -84,7 +84,7 @@ def random_shape_sample():
 
 if __name__ == '__main__':
     initialize()
-    validate_for_examples()
+    random_shape_sample()
     #test()
     #shape_net_test()
     # p = get_object("04379243", "eb773e1b74c883a070d809fda3b93e7b")

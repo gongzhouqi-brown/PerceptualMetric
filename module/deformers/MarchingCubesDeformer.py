@@ -1,3 +1,4 @@
+import subprocess
 from typing import Dict, Callable, Tuple
 
 import igl
@@ -10,7 +11,11 @@ from module.Deformer import Deformer
 class MarchingCubesDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
 
-        nv, nf, _, _, _ = igl.offset_surface(v, f, 0, 64, SIGNED_DISTANCE_TYPE_PSEUDONORMAL)
+        # nv, nf, _, _, _ = igl.offset_surface(v, f, 0, 64, SIGNED_DISTANCE_TYPE_PSEUDONORMAL)
+
+        igl.write_triangle_mesh("/home/zgong8/temp/mc_tmp_in.obj", v, f)
+        subprocess.run(["/home/zgong8/libigl/tutorial/build/bin/705_MarchingCubes", "/home/zgong8/temp/mc_tmp_in.obj", "/home/zgong8/temp/mc_tmp_out_1.obj", "/home/zgong8/temp/mc_tmp_out_2.obj"])
+        nv, nf = igl.read_triangle_mesh("/home/zgong8/temp/mc_tmp_out_2.obj", np.float64)
         return nv, nf
         # xs = v[:, 0]
         # ys = v[:, 1]

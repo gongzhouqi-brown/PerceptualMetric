@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 from data.ShapeNet import random_shape_net_object
-from module.unfinished.RandomCageDeformer import RandomCageDeformer
+from module.deformers.RandomCageDeformer import RandomCageDeformer
 from pipeline.Pipeline import Pipeline
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
