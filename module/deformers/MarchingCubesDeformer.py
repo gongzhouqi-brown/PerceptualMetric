@@ -2,14 +2,14 @@ from typing import Dict, Callable, Tuple
 
 import igl
 import numpy as np
-from igl import SIGNED_DISTANCE_TYPE_DEFAULT
+from igl import SIGNED_DISTANCE_TYPE_DEFAULT, SIGNED_DISTANCE_TYPE_PSEUDONORMAL
 
 from module.Deformer import Deformer
 
 # TODO randomness
 class MarchingCubesDeformer(Deformer):
     def transform(self, v: np.ndarray, f: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        nv, nf, _, _, _ = igl.offset_surface(v, f, 0, 64, SIGNED_DISTANCE_TYPE_DEFAULT)
+        nv, nf, _, _, _ = igl.offset_surface(v, f, 0, 64, SIGNED_DISTANCE_TYPE_PSEUDONORMAL)
         return nv, nf
         # xs = v[:, 0]
         # ys = v[:, 1]
@@ -41,7 +41,7 @@ class MarchingCubesDeformer(Deformer):
         # samples = np.array(samples)
         #
         # field, _, _ = igl.signed_distance(samples, v, f)
-        # nv, nf = mcubes.marching_cubes(field, 0)
+        # nv, nf = mcubes.marching_cubes(field, 0).
         # return nv, nf
 
     @staticmethod

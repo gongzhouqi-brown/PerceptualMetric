@@ -33,5 +33,12 @@ def random_shape_net_test():
 
 
 if __name__ == '__main__':
-    random_shape_net_test()
-    in_path = os.path.join(curr_dir, data_in_dir, file_name)
+    file_name = "mc{}{}.obj"
+    for i in range(10):
+        in_path_ori = os.path.join(curr_dir, data_out_dir, file_name.format(i, ""))
+        in_path_a = os.path.join(curr_dir, data_out_dir, file_name.format(i, "a"))
+        in_path_b = os.path.join(curr_dir, data_out_dir, file_name.format(i, "b"))
+        print(i)
+        print(is_manifold(file=in_path_ori))
+        print(is_manifold(file=in_path_a))
+        print(is_manifold(file=in_path_b))

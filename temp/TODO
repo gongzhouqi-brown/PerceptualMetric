@@ -1,0 +1,16 @@
+
+
+check behavior
+
+experiment on size
+
+ARAP:
+line 25: maxlen = (v.max(axis=0) - v.min(axis=0)).max()
+
+
+
+RandomCage to test
+
+
+
+10 MB upper limit

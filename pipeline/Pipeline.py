@@ -5,7 +5,7 @@ from module.Deformer import Deformer, get_random_deformation
 
 import igl
 
-from module.Refiner import refine
+# from module.Refiner import refine
 
 
 class Pipeline:
@@ -35,7 +35,7 @@ class Pipeline:
 
     def process_shape_data(self, vertices, faces):
         assert self.is_full()
-        nv, nf = refine(vertices, faces)
+        nv, nf = (vertices, faces)
         for deformer in self._deformers:
             if len(nf) < max_legal_faces:
                 nv, nf = deformer.transform(nv, nf)
