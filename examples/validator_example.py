@@ -45,7 +45,7 @@ def validate_for_examples():
 if __name__ == '__main__':
     # random_shape_net_test()
     # in_path = os.path.join(curr_dir, data_in_dir, file_name)
-    f_name = r"/home/zgong8/PerceptualMetric/examples/data_out/mc{}{}.obj"
-    for i in range(10):
-        print(is_manifold(file=f_name.format(i, "")))
+    f_name = r"D:\Graduate\Master\Projects\Metric - Danial Ritchie\PerceptualMetric\examples\data_out\out2.obj"
+    # for i in range(10):
+    print(is_manifold(file=f_name))
         

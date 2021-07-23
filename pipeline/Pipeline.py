@@ -43,7 +43,11 @@ class Pipeline:
         for deformer in self._deformers:
             if len(nf) < max_legal_faces:
                 nv, nf = deformer.transform(nv, nf)
-                print(str(deformer), "done")
+                if igl.extract_manifold_patches(nf)[0] != 1:
+                    print(str(deformer), "not manifold, dropped.")
+                    return None, None
+                else:
+                    print(str(deformer), "done")
             else:
                 print("result too large, dropped in the middle.")
                 return None, None

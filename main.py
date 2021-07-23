@@ -47,39 +47,43 @@ def list_shape_net():
 def random_shape_sample():
     for i in range(100):
         in_path = random_shape_net_object()
-        out_path_ori = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-ori.obj"
-        out_path1 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-1.obj"
-        file_path1 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-1.txt"
-        out_path2 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-2.obj"
-        file_path2 = r"/home/zgong8/PerceptualMetric/sample_out/" + str(i) + "-2.txt"
+        out_path_ori = r"/home/zgong8/data_out/" + str(i) + "-ori.obj"
+        out_path1 = r"/home/zgong8/data_out/" + str(i) + "-1.obj"
+        file_path1 = r"/home/zgong8/data_out/" + str(i) + "-1.txt"
+        out_path2 = r"/home/zgong8/data_out/" + str(i) + "-2.obj"
+        file_path2 = r"/home/zgong8/data_out/" + str(i) + "-2.txt"
         empty_pipeline = Pipeline(0)
         empty_pipeline.process_shape_file(in_path, out_path_ori)
-        ppl, status = run_random_pipeline(in_path, out_path1)
-        with open(file_path1, 'w') as f:
-            f.write(in_path)
-            f.write("\n")
-            f.write(str(ppl))
-            f.write("\n")
-            f.write("status: ")
-            f.write(str(status))
-            if status:
+        status = False
+        while not status:
+            ppl, status = run_random_pipeline(in_path, out_path1)
+            with open(file_path1, 'w') as f:
+                f.write(in_path)
                 f.write("\n")
-                f.write("manifold: ")
-                f.write(str(is_manifold(file=out_path1)))
-        f.close()
-        ppl, status = run_random_pipeline(in_path, out_path2)
-        with open(file_path2, 'w') as f:
-            f.write(in_path)
-            f.write("\n")
-            f.write(str(ppl))
-            f.write("\n")
-            f.write("status: ")
-            f.write(str(status))
-            if status:
+                f.write(str(ppl))
                 f.write("\n")
-                f.write("manifold: ")
-                f.write(str(is_manifold(file=out_path2)))
-        f.close()
+                f.write("status: ")
+                f.write(str(status))
+                if status:
+                    f.write("\n")
+                    f.write("manifold: ")
+                    f.write(str(is_manifold(file=out_path1)))
+            f.close()
+        status = False
+        while not status:
+            ppl, status = run_random_pipeline(in_path, out_path2)
+            with open(file_path2, 'w') as f:
+                f.write(in_path)
+                f.write("\n")
+                f.write(str(ppl))
+                f.write("\n")
+                f.write("status: ")
+                f.write(str(status))
+                if status:
+                    f.write("\n")
+                    f.write("manifold: ")
+                    f.write(str(is_manifold(file=out_path2)))
+            f.close()
         print("{} done!".format(str(i)))
 
 
@@ -94,10 +98,11 @@ def debug():
         in_f = out_f.format(i)
         print(i, "done")
 
+
 if __name__ == '__main__':
     initialize()
-    debug()
-    #random_shape_sample()
+    # debug()
+    random_shape_sample()
     #test()
     #shape_net_test()
 
