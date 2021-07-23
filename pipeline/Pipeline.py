@@ -40,10 +40,10 @@ class Pipeline:
     def process_shape_data(self, vertices, faces):
         assert self.is_full()
         nv, nf = refine(vertices, faces)
-        for deformer in self._deformers:
+        for i, deformer in enumerate(self._deformers):
             if len(nf) < max_legal_faces:
                 nv, nf = deformer.transform(nv, nf)
-                if igl.extract_manifold_patches(nf)[0] != 1:
+                if i+1 != len(self._deformers) and igl.extract_manifold_patches(nf)[0] != 1:
                     print(str(deformer), "not manifold, dropped.")
                     return None, None
                 else:
